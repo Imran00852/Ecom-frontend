@@ -12,6 +12,9 @@ import { useEffect } from "react";
 import { CustomError } from "../../types/api-types";
 import toast from "react-hot-toast";
 import { Skeleton } from "../../components/Loader";
+import { getLastMonths } from "../../utils/features";
+
+const { last6Months } = getLastMonths();
 
 const Dashboard = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
@@ -77,6 +80,7 @@ const Dashboard = () => {
                 <h2>Revenue & Transaction</h2>
                 {/* graph here */}
                 <BarChart
+                  labels={last6Months}
                   data_1={stats.chart.revenue}
                   data_2={stats.chart.order}
                   title_1="Revenue"
