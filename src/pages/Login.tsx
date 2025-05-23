@@ -31,17 +31,27 @@ const Login = () => {
         dob: date,
         _id: user.uid,
       });
-      if (res.data?.user) {
+
+      if (res?.data?.success) {
         toast.success(res.data.message);
-        dispatch(userExist(res.data.user));
+        if (res.data.user) {
+          dispatch(userExist(res.data.user));
+        }
         navigate("/");
       } else {
-        const error = res.error as FetchBaseQueryError;
-        const message = (error.data as MessageResponse).message;
+        const error = res.error as FetchBaseQueryError | undefined;
+        const message =
+          error &&
+          error.data &&
+          typeof error.data === "object" &&
+          "message" in error.data
+            ? (error.data as MessageResponse).message
+            : "Login failed";
+
         toast.error(message);
       }
-    } catch (error) {
-      toast.error("Server error");
+    } catch (err: any) {
+      toast.error(err?.message || "Server error");
     }
   };
 
