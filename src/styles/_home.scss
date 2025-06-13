@@ -65,7 +65,7 @@
     background-color: #0000006b;
     @include mixins.flex;
 
-    > button {
+    > button,a {
       @include mixins.flex;
       @include mixins.square(3rem);
       border-radius: 100%;
@@ -79,5 +79,6 @@
         rotate: 20deg;
       }
     }
+    
   }
 }

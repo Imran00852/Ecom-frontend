@@ -119,14 +119,14 @@ const Search = () => {
           <Skeleton length={10} />
         ) : (
           <div className="search-product-list">
-            {searchedData?.products.map((i) => (
+            {searchedData?.products?.map((i) => (
               <ProductCard
                 key={i._id}
                 name={i.name}
                 stock={i.stock}
                 price={i.price}
                 productId={i._id}
-                photo={i.photo}
+                photos={i.photos}
                 handler={handleAddToCart}
               />
             ))}

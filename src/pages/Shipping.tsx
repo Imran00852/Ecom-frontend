@@ -1,17 +1,18 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { BiArrowBack } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
-import { CartReducerInitialState } from "../types/reducer-types";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { server } from "../constants/config";
+import { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { BiArrowBack } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { server } from "../constants/config";
 import { saveShippingInfo } from "../redux/reducers/cartReducer";
+import { RootState } from "../redux/store";
 
 const Shipping = () => {
-  const { cartItems, total } = useSelector(
-    (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
+  const { cartItems, coupon } = useSelector(
+    (state: RootState) => state.cartReducer
   );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -40,9 +41,11 @@ const Shipping = () => {
     dispatch(saveShippingInfo(shippingInfo));
     try {
       const { data } = await axios.post(
-        `${server}/api/v1/payment/create`,
+        `${server}/api/v1/payment/create?id=${user?._id}`,
         {
-          amount: total,
+          items: cartItems,
+          shippingInfo,
+          coupon,
         },
         {
           headers: {

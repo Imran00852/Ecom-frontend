@@ -6,6 +6,7 @@
 @use "shipping";
 @use "login";
 @use "search";
+@use "product-details";
 
 @use "admin/dashboard";
 @use "admin/products";
@@ -42,6 +43,13 @@ body {
 }
 .green {
   color: rgb(0, 195, 0);
+}
+
+button {
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+  }
 }
 
 .container {

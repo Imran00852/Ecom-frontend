@@ -1,16 +1,15 @@
+import { ColumnDef } from "@tanstack/react-table";
 import { ReactElement, useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { FaPlus } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
-import { ColumnDef } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
-import { useAllProductsQuery } from "../../redux/api/productApi";
-import { server } from "../../constants/config";
-import toast from "react-hot-toast";
-import { CustomError } from "../../types/api-types";
-import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "../../types/reducer-types";
 import { Skeleton } from "../../components/Loader";
+import { useAllProductsQuery } from "../../redux/api/productApi";
+import { CustomError } from "../../types/api-types";
+import { UserReducerInitialState } from "../../types/reducer-types";
 
 interface DataType {
   photo: ReactElement;
@@ -65,9 +64,7 @@ const Product = () => {
     if (data)
       setRows(
         data.products.map((i) => ({
-          photo: (
-            <img src={`${server}/${i.photo}`} alt={i.name} loading="lazy" />
-          ),
+          photo: <img src={i.photos[0]?.url} alt={i.name} />,
           name: i.name,
           price: i.price,
           stock: i.stock,

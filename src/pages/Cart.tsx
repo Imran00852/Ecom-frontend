@@ -11,6 +11,7 @@ import {
   calculatePrice,
   discountApplied,
   removeCartItem,
+  saveCoupon,
 } from "../redux/reducers/cartReducer";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -52,6 +53,7 @@ const Cart = () => {
         .then(({ data }) => {
           setIsValidCouponCode(true);
           dispatch(discountApplied(data?.discount));
+          dispatch(saveCoupon(couponCode));
           dispatch(calculatePrice());
         })
         .catch(() => {

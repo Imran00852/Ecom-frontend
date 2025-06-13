@@ -51,7 +51,7 @@ const Home = () => {
               stock={i.stock}
               price={i.price}
               productId={i._id}
-              photo={i.photo}
+              photos={i.photos}
               handler={handleAddToCart}
             />
           ))

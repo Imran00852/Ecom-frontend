@@ -1,10 +1,16 @@
-import { FaPlus } from "react-icons/fa";
-import { server } from "../constants/config";
+import { FaExpandAlt, FaPlus } from "react-icons/fa";
 import { CartItem } from "../types/types";
+import { Link } from "react-router-dom";
+import { transformImage } from "../utils/features";
 
 interface ProductCardProps {
   productId: string;
-  photo: string;
+  photos: [
+    {
+      public_id: string;
+      url: string;
+    }
+  ];
   name: string;
   price: number;
   stock: number;
@@ -14,14 +20,14 @@ interface ProductCardProps {
 const ProductCard = ({
   productId,
   name,
-  photo,
+  photos,
   price,
   stock,
   handler,
 }: ProductCardProps) => {
   return (
     <div className="product-card">
-      <img src={`${server}/${photo}`} alt={name} />
+      <img src={transformImage(photos[0]?.url,700)} alt={name} />
       <p>{name}</p>
       <span>₹{price}</span>
       <div>
@@ -30,7 +36,7 @@ const ProductCard = ({
             handler({
               productId,
               name,
-              photo,
+              photo: photos[0].url,
               price,
               stock,
               quantity: 1,
@@ -39,6 +45,9 @@ const ProductCard = ({
         >
           <FaPlus />
         </button>
+        <Link to={`/product/${productId}`}>
+          <FaExpandAlt />
+        </Link>
       </div>
     </div>
   );

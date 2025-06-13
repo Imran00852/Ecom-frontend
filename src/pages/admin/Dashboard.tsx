@@ -42,7 +42,7 @@ const Dashboard = () => {
               <BsSearch />
               <input type="text" placeholder="Search for data,users,docs..." />
               <FaRegBell />
-              <img src={user?.photo} alt="User" />
+              <img src={user?.photo} alt="User" referrerPolicy="no-referrer" />
             </div>
 
             {/* widgets */}

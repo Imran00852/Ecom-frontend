@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
+const ProductDetails = lazy(() => import("./pages/ProductDetails"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Shipping = lazy(() => import("./pages/Shipping"));
 const Login = lazy(() => import("./pages/Login"));
@@ -32,6 +33,11 @@ const ProductManagement = lazy(
 const TransactionManagement = lazy(
   () => import("./pages/admin/management/TransactionManagement")
 );
+const Discount = lazy(() => import("./pages/admin/Discount"));
+const DiscountManagement = lazy(
+  () => import("./pages/admin/management/DiscountManagement")
+);
+const NewDiscount = lazy(() => import("./pages/admin/management/NewDiscount"));
 
 const BarCharts = lazy(() => import("./pages/admin/charts/BarCharts"));
 const PieCharts = lazy(() => import("./pages/admin/charts/PieCharts"));
@@ -84,6 +90,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
 
           {/* Not logged in */}
@@ -120,6 +127,7 @@ const App = () => {
             <Route path="/admin/products" element={<Product />} />
             <Route path="/admin/customers" element={<Customer />} />
             <Route path="/admin/transactions" element={<Transaction />} />
+            <Route path="/admin/discount" element={<Discount />} />
 
             {/* Charts */}
             <Route path="/admin/charts/bar" element={<BarCharts />} />
@@ -134,6 +142,12 @@ const App = () => {
             {/* Management */}
             <Route path="/admin/products/new" element={<NewProduct />} />
             <Route path="/admin/products/:id" element={<ProductManagement />} />
+
+            <Route path="/admin/discount/new" element={<NewDiscount />} />
+            <Route
+              path="/admin/discount/:id"
+              element={<DiscountManagement />}
+            />
             <Route
               path="/admin/transactions/:id"
               element={<TransactionManagement />}
