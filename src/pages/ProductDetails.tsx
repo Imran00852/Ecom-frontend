@@ -24,6 +24,7 @@ const ProductDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
+
   const [carouselOpen, setCarouselOpen] = useState(false);
   const reviewDialogRef = useRef<HTMLDialogElement>(null);
 
@@ -31,19 +32,14 @@ const ProductDetails = () => {
     params.id!
   );
 
-  const {
-    data: reviewsData,
-    isLoading: reviewsLoading,
-    refetch: refetchReviews,
-  } = useAllReviewsOfProductQuery(params.id!);
+  const reviewsResponse = useAllReviewsOfProductQuery(params.id!);
 
   const increment = () => {
     if (data?.product?.stock === quantity) {
-      return toast.error(`${data?.product?.stock} available only`);
+      return toast.error(${data?.product?.stock} available only);
     }
     setQuantity((prev) => prev + 1);
   };
-
   const decrement = () => {
     if (quantity === 1) {
       return toast.error("Quantity cannot be less than 1");
@@ -55,6 +51,7 @@ const ProductDetails = () => {
     if (cartItem.stock === 0) {
       return toast.error("Out of stock");
     }
+
     dispatch(addToCart(cartItem));
     toast.success("Item added to cart");
   };
@@ -108,7 +105,6 @@ const ProductDetails = () => {
       });
       responseToast(res, null, "");
       reviewCloseHandler();
-      refetchReviews(); // ✅ refetch after submitting review
     } catch (err) {
       toast.error("Error in adding review!");
     }
@@ -122,12 +118,10 @@ const ProductDetails = () => {
         reviewId: id,
       });
       responseToast(res, null, "");
-      refetchReviews(); // ✅ refetch after deleting review
     } catch (err) {
       toast.error("Error in deleting review!");
     }
   };
-
   return (
     <div className="product-details">
       {isLoading ? (
@@ -188,7 +182,7 @@ const ProductDetails = () => {
         </>
       )}
 
-      {/* Review Dialog */}
+      {/* dialog */}
       <dialog ref={reviewDialogRef} className="review-dialog">
         <button onClick={reviewCloseHandler}>X</button>
         <h2>Write a Review</h2>
@@ -205,7 +199,6 @@ const ProductDetails = () => {
         </form>
       </dialog>
 
-      {/* Reviews Section */}
       <section>
         <article>
           <h2>Reviews</h2>
@@ -223,10 +216,10 @@ const ProductDetails = () => {
             padding: "2rem",
           }}
         >
-          {reviewsLoading ? (
+          {reviewsResponse.isLoading ? (
             <Skeleton width="100%" length={5} />
           ) : (
-            reviewsData?.reviews.map((review) => (
+            reviewsResponse.data?.reviews.map((review) => (
               <div key={review._id} className="review">
                 <RatingsComponent value={review.rating} />
                 <p>{review.comment}</p>
@@ -252,46 +245,47 @@ const ProductDetails = () => {
   );
 };
 
-const ProductLoader = () => (
-  <div
-    style={{
-      display: "flex",
-      gap: "2rem",
-      border: "1px solid #f1f1f1",
-      height: "80vh",
-    }}
-  >
-    <section style={{ width: "100%", height: "100%" }}>
-      <Skeleton
-        width="100%"
-        containerHeight="100%"
-        height="100%"
-        length={2}
-      />
-    </section>
-    <section
+const ProductLoader = () => {
+  return (
+    <div
       style={{
-        width: "100%",
-        height: "100%",
         display: "flex",
-        flexDirection: "column",
-        gap: "4rem",
-        padding: "2rem",
+        gap: "2rem",
+        border: "1px solid #f1f1f1",
+        height: "80vh",
       }}
     >
-      <Skeleton width="100%" length={3} />
-      <Skeleton width="100%" length={4} />
-      <Skeleton width="100%" length={4} />
-    </section>
-  </div>
-);
+      <section style={{ width: "100%", height: "100%" }}>
+        <Skeleton
+          width="100%"
+          containerHeight="100%"
+          height="100%"
+          length={2}
+        />
+      </section>
+      <section
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "4rem",
+          padding: "2rem",
+        }}
+      >
+        <Skeleton width="100%" length={3} />
+        <Skeleton width="100%" length={4} />
+        <Skeleton width="100%" length={4} />
+      </section>
+    </div>
+  );
+};
 
 const NextButton: CarouselButtonType = ({ onClick }) => (
   <button onClick={onClick} className="carousel-btn">
     <FaArrowRightLong />
   </button>
 );
-
 const PrevButton: CarouselButtonType = ({ onClick }) => (
   <button onClick={onClick} className="carousel-btn">
     <FaArrowLeftLong />
